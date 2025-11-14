@@ -26,7 +26,6 @@ fn main() -> Result<()> {
 
     loop {
         terminal.draw(|frame| {
-            // --- LAYOUT MIT 3 KÄSTEN ---
             let chunks = Layout::default()
                 .direction(Direction::Vertical)
                 .constraints([
@@ -36,13 +35,11 @@ fn main() -> Result<()> {
                 ])
                 .split(frame.size());
 
-            // --- Header ---
             let header = Paragraph::new("Stens Kubernetes Templator - qPress 'q' to quit")
                 .style(Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD));
 
             frame.render_widget(header, chunks[0]);
 
-            // --- Info-Kasten je nach Auswahl ---
             let info_text = match items[selected] {
                 "Deployment" => "Ein Deployment erzeugt Pods basierend auf einem Template.",
                 "Service"    => "Ein Service stellt stable Netzwerkkonnektivität zu Pods bereit.",
@@ -54,7 +51,6 @@ fn main() -> Result<()> {
 
             frame.render_widget(info, chunks[1]);
 
-            // --- Menü ---
             let list_items: Vec<ListItem> = items
                 .iter()
                 .enumerate()
@@ -75,7 +71,6 @@ fn main() -> Result<()> {
             frame.render_widget(list, chunks[2]);
         })?;
 
-        // --- Tastatur-Handling ---
         if event::poll(std::time::Duration::from_millis(100))? {
             if let Event::Key(key) = event::read()? {
                 match key.code {
@@ -100,7 +95,6 @@ fn main() -> Result<()> {
         }
     }
 
-    // TUI verlassen
     disable_raw_mode()?;
     execute!(stdout(), LeaveAlternateScreen)?;
 
