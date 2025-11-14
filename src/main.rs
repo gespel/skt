@@ -12,10 +12,8 @@ use crossterm::{
 use std::io::{stdout, Result};
 
 fn main() -> Result<()> {
-    // Dein ManifestCreator
-    let m = ManifestCreator::new();
+    let _m = ManifestCreator::new();
 
-    // TUI Setup
     enable_raw_mode()?;
     execute!(stdout(), EnterAlternateScreen)?;
     let backend = CrosstermBackend::new(stdout());
