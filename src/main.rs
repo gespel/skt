@@ -113,7 +113,7 @@ fn main() -> Result<()> {
                 io::stdin().read_line(&mut image)?;
                 image = image.trim().to_string();
 
-                println!("{}", m.create_deployment(name.as_str(), image.as_str()).unwrap())
+                println!("\n\n{}", m.create_deployment(name.as_str(), image.as_str()).unwrap())
             },
             _ => {
 
