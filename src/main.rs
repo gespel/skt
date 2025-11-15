@@ -1,3 +1,4 @@
+use std::io;
 use sktlib::core::manifest_creator::ManifestCreator;
 
 use ratatui::prelude::*;
@@ -9,10 +10,10 @@ use crossterm::{
     execute,
     terminal::{enable_raw_mode, disable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
-use std::io::{stdout, Result};
+use std::io::{stdout, Result, Write};
 
 fn main() -> Result<()> {
-    let _m = ManifestCreator::new();
+    let m = ManifestCreator::new();
 
     enable_raw_mode()?;
     execute!(stdout(), EnterAlternateScreen)?;
@@ -97,9 +98,29 @@ fn main() -> Result<()> {
     execute!(stdout(), LeaveAlternateScreen)?;
 
     if selected != usize::MAX {
-        println!("Ausgewählt: {}", items[selected]);
+        match items[selected] {
+            "Deployment" => {
+                let mut name = String::new();
+                let mut image = String::new();
+
+                print!("Enter deployment name: ");
+                stdout().flush()?;
+                io::stdin().read_line(&mut name)?;
+                name = name.trim().to_string();
+
+                print!("Enter image name: ");
+                stdout().flush()?;
+                io::stdin().read_line(&mut image)?;
+                image = image.trim().to_string();
+
+                println!("{}", m.create_deployment(name.as_str(), image.as_str()).unwrap())
+            },
+            _ => {
+
+            }
+        }
     } else {
-        println!("Abgebrochen.");
+        println!("Aborted.");
     }
 
     Ok(())
